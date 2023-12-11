@@ -1,0 +1,32 @@
+extends layout.pug
+
+block content
+    .container
+        h1 Inscription 
+        if error 
+            .alert.alert-danger #{error}
+        form(action='/inscription' method="post")
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block 
+                        i.fa.fa-envelope 
+                input(type="email" class="form-control" placeholder="Email" name="email")     
+            
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block
+                        i.fa.fa-user
+                input(type="text" class="form-control" placeholder="username" name="username")
+
+            .input-group.mb-3
+                .input-group-prepend
+                    .input-group-text.d-none.d-lg-block 
+                        i.fa.fa-lock
+                input(type="password" class="form-control" placeholder="Mot de passe" name="password")
+
+            hr
+
+
+            .row.justify-content-center
+                .col-2
+                    button.btn.btn-primary(type="submit") Enregistrer
