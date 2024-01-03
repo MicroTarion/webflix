@@ -1,0 +1,39 @@
+extends ../layout.pug 
+
+block content
+    #slideMovie
+        div(style="background-image: url('https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"+movie.backdrop_path+"');")
+            #prezMovie 
+                .container
+                    .row
+                        .col-3
+                            img(src="https://image.tmdb.org/t/p/w500/"+movie.poster_path)
+                        .col-9 
+                            h2 #{movie.title}
+                            span.release #{movie.release_date} 
+                            span.sep  • 
+                            span
+                                each genre, index in movie.genres.slice(0, -1)
+                                    | #{genre.name}, 
+                                if movie.genres.length
+                                    span #{movie.genres[movie.genres.length - 1].name}
+                            br
+                            span Note des utilisateurs : 
+                            span.notation #{movie.vote_average}
+                            br
+                            br
+                            span.tagline #{movie.tagline}
+                            h4.synopsis Synopsis
+                            p #{movie.overview}
+                            br
+                            span  
+                                if cast 
+                                    p CAST 
+                                    each actor in cast 
+                                        li #{actor.name}
+                                        img(src="https://image.tmdb.org/t/p/w500"+actor.profile_path width="100")
+                                        
+                                else 
+                                    p PAS DE CAST
+                            form(method="post")
+                                button.btn.btn-secondary(type="submit") Enregistrer ce film
