@@ -1,0 +1,36 @@
+extends layout.pug 
+block content
+
+    if movie
+        div(background-image url=("https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces"+movie.backdrop_path+""))
+            if movie.poster_path
+                img(src="https://image.tmdb.org/t/p/w500/"+movie.poster_path width="300")
+            span.title #{movie.title} 
+            br
+            if movie.belongs_to_collection
+                span.collection Fait partie de la Collection de films : #{movie.belongs_to_collection.name}
+            span.release Année de sortie : #{movie.release_date}
+            br
+            span Note spectateur : 
+                span.notation #{movie.vote_average}
+            p #{movie.overview}
+             br
+            p #{movie.tagline}
+            form(method="post")
+                button(type="submit") Enregistrer ce film
+    else 
+        h2 PAS DE FILM
+    if cast 
+        p CAST 
+        each actor in cast 
+            li #{actor.name}
+              img(src="https://image.tmdb.org/t/p/w500"+actor.profile_path width="100")
+             
+    else 
+        p PAS DE CAST
+    
+    .container
+        form(action="/admin" method="get")            
+            label.form-label(for="q") Titre du film 
+            input.form-control(type="search" name="q" id="q" value=q placeholder="Titre du film")
+            button.btn.btn-secondary(type="submit") Chercher

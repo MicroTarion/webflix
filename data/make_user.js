@@ -1,4 +1,4 @@
-import '/config';
+import 'dotenv/config';
 import con from '../app/database_sql.js';
 import bcrypt from 'bcryptjs';
 

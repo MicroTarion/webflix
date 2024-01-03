@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 11 déc. 2023 à 11:02
+-- Généré le : ven. 15 déc. 2023 à 08:31
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -24,22 +24,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `user`
+-- Structure de la table `movie`
 --
 
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE IF NOT EXISTS `user` (
+DROP TABLE IF EXISTS `movie`;
+CREATE TABLE IF NOT EXISTS `movie` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `username` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `password` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `lastname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `firstname` varchar(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `a2f` tinyint(1) NOT NULL,
+  `tmdb_id` int NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `release_date` date DEFAULT NULL,
+  `synopsis` text COLLATE utf8mb4_general_ci NOT NULL,
+  `note` float NOT NULL,
+  `poster` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `backdrop` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `tagline` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `user_id` int NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
+  UNIQUE KEY `tmdb_id` (`tmdb_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,31 +1,36 @@
-
-import UserRepo from '../repository/UserRepository.js'
 import bcrypt from 'bcryptjs';
-const saltRounds = 10
-class AuthController {
-    index (request, response) {
-        response.render('auth')
-    }
-    process (request, response) {
-        // Etape 1 : récupérer les information de l'utilisateur (via son email)
-        console.log(request.body);
-        UserRepo.getUserByUsername(request.body.username).then(infosUser => {
-            // Etape 2 : Vérifier si user existe
-            if(infosUser) {
-                // Etape 3 : Vérifier si mot de passe correct
-                if(bcrypt.compareSync(request.body.password, infosUser.password)) {
-                    console.log('Bon username + bon mdp');
-                    
-                    // request.flash("notify", "Vous êtes maintenant connecté.");
-                    response.redirect('/');
-                    return;
-                }
-            }
-            response.render('authentication/index', {error : "Identifiants incorrects", email : request.body.email})
-        }).catch((error) => {
-            console.log(error)
-        })
-       
-    }
+import { selectByUsername } from "../repository/User.js";
+import jwt  from 'jsonwebtoken';
+import Cookies from "cookies";
+
+
+
+export function get(req, res) {
+    res.render('auth');
 }
-export default new AuthController();
+
+export function post(req, res) {
+    let error;
+    selectByUsername(req.body.username).then((user) => {
+        if(user !== null) {
+            if(bcrypt.compareSync(req.body.password, user.password)) {
+                let accessToken = jwt.sign({username: user.username, a2f: user.a2f}, process.env.SECRET_JWT, {expiresIn: 604800});                   
+                new Cookies(req,res).set('jwt', accessToken, {httpOnly: true, secure: (process.env.APP_ENV === 'production') });
+
+                req.flash('notify', 'Vous êtes maintenant connecté');
+                return res.redirect('/admin');
+            } else {
+                error = `Echec d'identification.`
+            }
+        } else {
+            error = `Auncun compte n'existe avec cet identifiant.`
+        }
+        res.render('auth', { error });
+    })
+}
+
+export function authControllerDeconnect(req, res) {
+    new Cookies(req,res).set('jwt',"", {maxAge: Date.now()});
+    req.flash('notify', 'Vous êtes maintenant déconnecté');
+    return res.redirect('/');
+}
